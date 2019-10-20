@@ -11,7 +11,7 @@ import './homePage.css';
 class HomePage extends Component {
 
     state = {
-        fetchingData: true
+        fetchingData: false
     }
 
     componentDidMount = async () => {
@@ -19,6 +19,7 @@ class HomePage extends Component {
     }
 
     handleSearch = async data => {
+        if (this.state.fetchingData) return;
         this.setState({ fetchingData: true });
         await this.props.fetchTasksAPI(data);
         this.setState({ fetchingData: false });

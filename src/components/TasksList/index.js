@@ -13,7 +13,7 @@ class TasksList extends Component {
             return (
                 <TaskItem key={task.email} task={task} />
             );
-        })
+        });
     }
 
     renderView = () => {
@@ -32,13 +32,13 @@ class TasksList extends Component {
             <div className='list-container'>
                 {this.renderView()}
             </div>
-        )
+        );
     }
 }
 
 TasksList.propTypes = {
     fetchingData: PropTypes.bool.isRequired,
     tasks: PropTypes.arrayOf(PropTypes.shape(ITASK)),
-  };
+};
 
 export default TasksList;
