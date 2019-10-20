@@ -1,6 +1,7 @@
 import axios from 'axios';
 import store from "../store";
 import { baseUrl } from '../utility/constant';
+import { getActualFormattedDate } from '../utility/function';
 
 // SET SEARCHED PHRASE & FETCH TASKS
 export const FETCH_TASKS = 'FETCH_TASKS';
@@ -60,6 +61,30 @@ export const updateSelectedTaskAPI = selectedTask => dispatch => {
             .then(({ status, statusText }) => {
                 if (status === 200 && statusText === 'OK') {
                     dispatch(updateSelectedTask(selectedTask, selectedTaskId));
+                }  
+            })
+            .catch(err => console.warn(err));
+};
+
+
+// SET DATE
+export const SET_TASK_DATE = 'SET_TASK_DATE';
+const setTaskDate = selectedTask => {
+    const filteredTasks = (store.getState().controlPanel.tasks).filter(task => task._id !== selectedTask._id);
+    const updatedTasks = [ ...filteredTasks, selectedTask];
+    return {
+        type: SET_TASK_DATE,
+        data: updatedTasks
+    };
+};
+export const setTaskDateAPI = (selectedTaskId, action) => dispatch => {
+    const tasks = store.getState().controlPanel.tasks;
+    const selectedTask = tasks.filter(task => task._id === selectedTaskId)[0];
+    selectedTask[action] = getActualFormattedDate();
+    return axios.put(`${baseUrl}/tasks/${selectedTaskId}/${action}`, selectedTask)
+            .then(({ status, statusText }) => {
+                if (status === 200 && statusText === 'OK') {
+                    dispatch(setTaskDate(selectedTask));
                 }  
             })
             .catch(err => console.warn(err));

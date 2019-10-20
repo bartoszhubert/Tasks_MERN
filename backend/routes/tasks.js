@@ -1,5 +1,12 @@
 const router = require('express').Router();
 const Task = require('../models/task.model');
+const getActualFormattedDate = () => {
+  const day = new Date().getDate();
+  const month = new Date().getMonth() + 1;
+  const formMonth = month < 10 ? '0' + month : month;
+  const year = new Date().getFullYear();
+  return `${day}.${formMonth}.${year}`;
+}
 
 router.route('/').get((req, res) => {
   Task.find()
@@ -7,7 +14,7 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/create').post((req, res) => {
+router.route('/').post((req, res) => {
   const { imie, nazwisko, email, temat, opis, data, kategoria, priorytet, uwagi, start, stop } = req.body;
 
   const newTask = new Task({
@@ -41,7 +48,20 @@ router.route('/:id').put((req, res) => {
       task.uwagi = req.body.uwagi;
 
       task.save()
-        .then(() => res.json('Exercise updated!'))
+        .then(() => res.json('Task updated!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/:id/:action').put((req, res) => {
+  Task.findById(req.params.id)
+    .then(task => {
+      const action = req.params.action;
+      task[action] = getActualFormattedDate();
+
+      task.save()
+        .then(() => res.json('Task updated!'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
