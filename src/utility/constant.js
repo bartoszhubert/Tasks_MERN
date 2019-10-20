@@ -18,30 +18,8 @@ import PropTypes from 'prop-types';
 //     }
 // ];
 
-// export const editUserInputs = [
-//     {
-//         name: 'name',
-//         title: 'Name',
-//         type: 'text'
-//     },
-//     {
-//         name: 'username',
-//         title: 'Username',
-//         type: 'text'
-//     },
-//     {
-//         name: 'email',
-//         title: 'Email',
-//         type: 'text'
-//     },
-//     {
-//         name: 'city',
-//         title: 'City',
-//         type: 'text'
-//     }
-// ];
 
-// export const baseUrl = 'https://jsonplaceholder.typicode.com/users';
+export const baseUrl = "http://localhost:5000";
 
 // export const errors = {
 //     email: 'Email is required',
@@ -49,11 +27,7 @@ import PropTypes from 'prop-types';
 //     username: 'Username is required'
 // };
 
-// export const tableHeader = ['id', 'name', 'username', 'email', 'city', 'edit', 'delete'];
-
-// export const validBtnText = ['Add new', 'Cancel', 'Delete', 'Edit', 'Submit'];
-
-// export const validBtnVariant = ['add', 'cancel', 'cancelM', 'delete', 'edit', 'submit'];
+export const editTaskInputs = ['imie', 'nazwisko', 'email', 'temat', 'opis', 'data', 'kategoria', 'priorytet', 'uwagi'];
 
 export const ITASK = {
     imie: PropTypes.string,
@@ -65,6 +39,6 @@ export const ITASK = {
     kategoria: PropTypes.string,
     priorytet: PropTypes.oneOf(['ERROR', 'INFO', 'WARNING']),
     uwagi: PropTypes.string,
-    start: PropTypes.bool,
-    stop: PropTypes.bool
+    start: PropTypes.string,
+    stop: PropTypes.string
 }

@@ -1,0 +1,13 @@
+.details-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.item-btn {
+  background: white;
+  border: none;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  margin: 10px auto;
+  padding: 5px 20px;
+}

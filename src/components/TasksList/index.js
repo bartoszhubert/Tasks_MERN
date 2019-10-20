@@ -9,9 +9,10 @@ import './tasksList.css';
 class TasksList extends Component {
 
     renderTaskItem = () => {
-        return this.props.tasks.map(task => {
+        const { fetchSelectedTaskAPI, tasks } = this.props;
+        return tasks.map(task => {
             return (
-                <TaskItem key={task.email} task={task} />
+                <TaskItem key={task.email} fetchSelectedTaskAPI={fetchSelectedTaskAPI} task={task} />
             );
         });
     }
@@ -38,7 +39,12 @@ class TasksList extends Component {
 
 TasksList.propTypes = {
     fetchingData: PropTypes.bool.isRequired,
+    fetchSelectedTaskAPI: PropTypes.func.isRequired,
     tasks: PropTypes.arrayOf(PropTypes.shape(ITASK)),
 };
+
+TasksList.defaultProps = {
+    tasks: []  
+}
 
 export default TasksList;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTasksAPI } from '../../action';
+import { fetchSelectedTaskAPI, fetchTasksAPI } from '../../action';
 
 import SearchBox from '../SearchBox';
 import TasksList from '../TasksList';
@@ -14,8 +14,8 @@ class HomePage extends Component {
         fetchingData: false
     }
 
-    componentDidMount = async () => {
-        this.handleSearch();
+    componentDidMount = () => {
+        this.props.tasks.length === 0 && this.handleSearch();
     }
 
     handleSearch = async data => {
@@ -26,7 +26,7 @@ class HomePage extends Component {
     }
 
     render() {
-        const { tasks } = this.props;
+        const { fetchSelectedTaskAPI, tasks } = this.props;
         const { fetchingData } = this.state;
         return (
             <div className='home-container'>
@@ -34,7 +34,7 @@ class HomePage extends Component {
                 <Link to='/create'>
                     <button>Create a new task</button>
                 </Link>
-                <TasksList fetchingData={fetchingData} tasks={tasks} />
+                <TasksList fetchingData={fetchingData} fetchSelectedTaskAPI={fetchSelectedTaskAPI} tasks={tasks} />
             </div>
         )
     }
@@ -44,4 +44,4 @@ const mapStateToProps = state => ({
     tasks: state.controlPanel.tasks
 });
 
-export default connect(mapStateToProps, { fetchTasksAPI })(HomePage);
+export default connect(mapStateToProps, { fetchTasksAPI, fetchSelectedTaskAPI })(HomePage);

@@ -1,7 +1,8 @@
-import { FETCH_TASKS } from '../action';
+import { FETCH_TASKS, SET_SELECTED_TASK, UPDATE_SELECTED_TASK } from '../action';
 
 const initialState = {
   searchedPhrase: '',
+  selectedTask: null,
   tasks: []
 };
   
@@ -9,22 +10,27 @@ export default (state = initialState, action) => {
   const { data, type } = action;
   switch (type) {
 
-    // case EDIT_USER:
-    //     const copyUsers = [...state.users];
-    //     copyUsers.splice(index, 1, data);
-    //   return {
-    //     ...state,
-    //     users: copyUsers
-    //   }
-
     case FETCH_TASKS:
       return {
         ...state,
         searchedPhrase: data.searchedText,
         tasks: data.tasks
       };
+    
+    case SET_SELECTED_TASK:
+      return {
+        ...state,
+        selectedTask: data
+      };
+
+    case UPDATE_SELECTED_TASK:
+      return {
+        ...state,
+        tasks: data
+      }
 
     default:
       return state;
+      
   };
 };

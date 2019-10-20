@@ -1,8 +1,8 @@
-// import axios from 'axios';
-// import store from "../store";
-// import { baseUrl } from '../utility/constant';
+import axios from 'axios';
+import store from "../store";
+import { baseUrl } from '../utility/constant';
 
-// SET SEARCHED PHRASE and FETCH TASKS
+// SET SEARCHED PHRASE & FETCH TASKS
 export const FETCH_TASKS = 'FETCH_TASKS';
 const fetchTasks = data => {
     return {
@@ -11,56 +11,56 @@ const fetchTasks = data => {
     };
 };
 export const fetchTasksAPI = searchedText => dispatch => {
-    // return axios.get(`${baseUrl}`).then(data => {
-        const api = [
-            {
-                imie: 'Bartosz',
-                nazwisko: 'Grab',
-                email: 'bart21@gmail.com',
-                temat: 'naprawa',
-                opis: 'Ot is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
-                data: '20.10.2019',
-                kategoria: 'czesci',
-                priorytet: 'WARNING',
-                uwagi: '',
-                start: false,
-                stop: false
-            },
-            {
-                imie: 'Hubert',
-                nazwisko: 'Grab',
-                email: 'hubcio@gmail.com',
-                temat: 'wymiana',
-                opis: 'Ot is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
-                data: '20.01.2020',
-                kategoria: 'czesci',
-                priorytet: 'INFO',
-                uwagi: '',
-                start: false,
-                stop: false
-            },
-            {
-                imie: 'Janek',
-                nazwisko: 'Grab',
-                email: 'janekjanek@gmail.com',
-                temat: 'wymiana',
-                opis: 'Ot is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
-                data: '20.05.2020',
-                kategoria: 'calosc',
-                priorytet: 'ERROR',
-                uwagi: '',
-                start: false,
-                stop: false
-            }
-        ]
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve(api);
-              }, 1000);
-        }).then(t => {
-            const filteredTasks = t.filter(task => task.temat.match(searchedText));
-            const tasks = filteredTasks.sort((a, b) => new Date(b.date) - new Date(a.date));
-            const data = { searchedText, tasks };
-            dispatch(fetchTasks(data));
-    });
+    const uriEndpoint = searchedText ? `/tasks?temat=${searchedText}` : '/tasks';
+    return axios.get(baseUrl + uriEndpoint)
+            .then(({ data, status, statusText }) => {
+                if (status === 200 && statusText === 'OK') {
+                    const filteredTasks = data.filter(task => task.temat.match(searchedText));
+                    const tasks = filteredTasks.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    const finalForm = { searchedText, tasks };
+                    dispatch(fetchTasks(finalForm));
+                }  
+            })
+            .catch(err => console.warn(err));
+};
+
+
+// SET SELECTED TASK
+export const SET_SELECTED_TASK = 'SET_SELECTED_TASK';
+const setSelectedTask = data => {
+    return {
+        type: SET_SELECTED_TASK,
+        data
+    };
+};
+export const fetchSelectedTaskAPI = selectedTaskId => dispatch => {
+    return axios.get(`${baseUrl}/tasks/${selectedTaskId}`)
+            .then(({ data, status, statusText }) => {
+                if (status === 200 && statusText === 'OK') {
+                    dispatch(setSelectedTask(data));
+                }  
+            })
+            .catch(err => console.warn(err));
+};
+
+
+// UPDATE SELECTED TASK
+export const UPDATE_SELECTED_TASK = 'UPDATE_SELECTED_TASK';
+const updateSelectedTask = (selectedTask, selectedTaskId) => {
+    const filteredTasks = (store.getState().controlPanel.tasks).filter(task => task._id !== selectedTaskId);
+    const updatedTasks = [ ...filteredTasks, selectedTask];
+    return {
+        type: UPDATE_SELECTED_TASK,
+        data: updatedTasks
+    };
+};
+export const updateSelectedTaskAPI = selectedTask => dispatch => {
+    const selectedTaskId = selectedTask._id;
+    return axios.put(`${baseUrl}/tasks/${selectedTaskId}`, selectedTask)
+            .then(({ status, statusText }) => {
+                if (status === 200 && statusText === 'OK') {
+                    dispatch(updateSelectedTask(selectedTask, selectedTaskId));
+                }  
+            })
+            .catch(err => console.warn(err));
 };
