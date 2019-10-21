@@ -1,4 +1,4 @@
-import { FETCH_TASKS, SET_SELECTED_TASK, SET_TASK_DATE, UPDATE_SELECTED_TASK } from '../action';
+import { ADD_NEW_TASK, FETCH_TASKS, SET_SELECTED_TASK, SET_TASK_DATE, UPDATE_SELECTED_TASK } from '../action';
 
 const initialState = {
   searchedPhrase: '',
@@ -9,6 +9,12 @@ const initialState = {
 export default (state = initialState, action) => {
   const { data, type } = action;
   switch (type) {
+
+    case ADD_NEW_TASK:
+      return {
+        ...state,
+        tasks: [ ...state.tasks, data ]
+      };
 
     case FETCH_TASKS:
       return {

@@ -88,3 +88,22 @@ export const setTaskDateAPI = (selectedTask, action) => dispatch => {
             })
             .catch(err => console.warn(err));
 };
+
+
+// ADD NEW TASK
+export const ADD_NEW_TASK = 'ADD_NEW_TASK';
+const addNewTask = newTask => {
+    return {
+        type: ADD_NEW_TASK,
+        data: newTask
+    };
+};
+export const addNewTaskAPI = newTask => dispatch => {
+    return axios.post(`${baseUrl}/tasks`, newTask)
+            .then(({ status, statusText }) => {
+                if (status === 200 && statusText === 'OK') {
+                    dispatch(addNewTask(newTask));
+                }  
+            })
+            .catch(err => console.warn(err));
+};

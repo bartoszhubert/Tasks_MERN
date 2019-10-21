@@ -29,6 +29,8 @@ export const baseUrl = "http://localhost:5000";
 
 export const editTaskInputs = ['imie', 'nazwisko', 'email', 'temat', 'opis', 'data', 'kategoria', 'priorytet', 'uwagi'];
 
+export const priorytet = ['ERROR', 'INFO', 'WARNING'];
+
 export const ITASK = {
     imie: PropTypes.string,
     nazwisko: PropTypes.string,
@@ -37,7 +39,7 @@ export const ITASK = {
     opis: PropTypes.string,
     data: PropTypes.string,
     kategoria: PropTypes.string,
-    priorytet: PropTypes.oneOf(['ERROR', 'INFO', 'WARNING']),
+    priorytet: PropTypes.oneOf(priorytet),
     uwagi: PropTypes.string,
     start: PropTypes.string,
     stop: PropTypes.string
