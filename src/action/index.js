@@ -69,22 +69,21 @@ export const updateSelectedTaskAPI = selectedTask => dispatch => {
 
 // SET DATE
 export const SET_TASK_DATE = 'SET_TASK_DATE';
-const setTaskDate = selectedTask => {
-    const filteredTasks = (store.getState().controlPanel.tasks).filter(task => task._id !== selectedTask._id);
-    const updatedTasks = [ ...filteredTasks, selectedTask];
+const setTaskDate = newTasks => {
     return {
         type: SET_TASK_DATE,
-        data: updatedTasks
+        data: newTasks
     };
 };
-export const setTaskDateAPI = (selectedTaskId, action) => dispatch => {
-    const tasks = store.getState().controlPanel.tasks;
-    const selectedTask = tasks.filter(task => task._id === selectedTaskId)[0];
-    selectedTask[action] = getActualFormattedDate();
-    return axios.put(`${baseUrl}/tasks/${selectedTaskId}/${action}`, selectedTask)
+export const setTaskDateAPI = (selectedTask, action) => dispatch => {
+    const copyTask = { ...selectedTask };
+    const tasks = (store.getState().controlPanel.tasks).filter(task => task._id !== copyTask._id);
+    copyTask[action] = getActualFormattedDate();
+    const newTasks = [ ...tasks, copyTask ];
+    return axios.put(`${baseUrl}/tasks/${copyTask._id}/${action}`, copyTask)
             .then(({ status, statusText }) => {
                 if (status === 200 && statusText === 'OK') {
-                    dispatch(setTaskDate(selectedTask));
+                    dispatch(setTaskDate(newTasks));
                 }  
             })
             .catch(err => console.warn(err));

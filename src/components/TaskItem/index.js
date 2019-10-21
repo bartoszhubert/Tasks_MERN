@@ -16,8 +16,8 @@ class TaskItem extends Component {
     }
 
     setTaskDate = action => {
-        // const { setTaskDateAPI, task: { _id } } = this.props;
-        // setTaskDateAPI(_id, action);
+        const { setTaskDateAPI, task } = this.props;
+        setTaskDateAPI(task, action);
     }
 
     render() {
