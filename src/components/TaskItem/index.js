@@ -7,6 +7,9 @@ import { setBtnColor } from '../../utility/function';
 
 import './taskItem.css';
 
+const START = ['ROZPOCZNIJ', 'ROZPOCZETE'];
+const END = 'ZAKONCZ';
+
 class TaskItem extends Component {
 
     getDetailsPage = async () => {
@@ -16,8 +19,11 @@ class TaskItem extends Component {
     }
 
     setTaskDate = action => {
+        if (this.makingRequest) return;
+        this.makingRequest = true;
         const { setTaskDateAPI, task } = this.props;
         setTaskDateAPI(task, action);
+        this.makingRequest = false;
     }
 
     render() {
@@ -36,8 +42,18 @@ class TaskItem extends Component {
                     <span style={{color: setBtnColor(priorytet)}}>{priorytet}</span>
                 </div>
                 <div className='item-btnWrap'>
-                    <button className='item-btn' disabled={isStartDisabled} onClick={() => this.setTaskDate('start')}>ROZPOCZNIJ</button>
-                    <button className='item-btn' disabled={isStopDisabled} onClick={() => this.setTaskDate('stop')}>ZAKONCZ</button>
+                    <button 
+                        className='item-btn' 
+                        disabled={isStartDisabled} 
+                        onClick={() => this.setTaskDate('start')}>
+                            {isStartDisabled ? START[1] : START[0]}
+                    </button>
+                    <button 
+                        className='item-btn' 
+                        disabled={isStopDisabled || !isStartDisabled} 
+                        onClick={() => this.setTaskDate('stop')}>
+                            {END}
+                    </button>
                 </div>
             </div>
         );
