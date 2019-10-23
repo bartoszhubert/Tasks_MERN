@@ -3,7 +3,7 @@ export const getActualFormattedDate = () => {
     const month = new Date().getMonth() + 1;
     const formMonth = month < 10 ? '0' + month : month;
     const year = new Date().getFullYear();
-    return `${day}.${formMonth}.${year}`;
+    return `${year}/${formMonth}/${day}`;
 }
 
 export const setBtnColor = text => {

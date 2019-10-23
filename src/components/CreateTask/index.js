@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { ITASK, priorytet } from '../../utility/constant';
+import { connect } from 'react-redux';
+import { addNewTaskAPI } from '../../action';
+import { errorsText, ITASK, priorytet } from '../../utility/constant';
 
+import Button from '../Button';
 import Input from '../Input';
 
 import './createTask.css';
@@ -10,15 +13,17 @@ class CreateTask extends Component {
     static displayName = 'CreateTask';
 
     state = {
-        imie: '',
-        nazwisko: '',
-        email: '',
-        temat: '',
-        opis: '',
-        data: '',
-        kategoria: '',
-        priorytet: '',
-        uwagi: '',
+        task: {
+            imie: '',
+            nazwisko: '',
+            email: '',
+            temat: '',
+            opis: '',
+            data: '',
+            kategoria: '',
+            priorytet: '',
+            uwagi: ''
+        },
         inputErrors: {
             imie: '',
             nazwisko: '',
@@ -30,29 +35,23 @@ class CreateTask extends Component {
             priorytet: '',
             uwagi: ''
         },
-        inputTouched: {
-            imie: false,
-            nazwisko: false,
-            email: false,
-            temat: false,
-            opis: false,
-            data: false,
-            kategoria: false,
-            priorytet: false,
-            uwagi: false
-        },
-        formValid: false
+        isFormValid: false
     }
 
     goToHomePage = () => this.props.history.push('/');
 
-    handleChange = ({ target: { name, value } }) => this.setState({ [name]: value }, () => this.validateField(name, value));
+    handleChange = ({ target: { name, value } }) => this.setState({ task: { ...this.state.task, [name]: value } }, () => this.validateField(name, value));
 
-    handleTouched = ({ target: { name } }) => this.setState({ inputTouched: { ...this.state.inputTouched, [name]: true } });
-
-    submitForm = e => {
+    submitForm = async e => {
         e.preventDefault();
-
+        const { isFormValid } = this.state;
+        if (!isFormValid || this.makingReq) return;
+        this.makingReq = true;
+        const { addNewTaskAPI } = this.props;
+        const newTask = { ...this.state.task, start: '', stop: '' };
+        await addNewTaskAPI(newTask);
+        this.goToHomePage();
+        this.makingReq = false;
     }
 
     validateField = (name, value) => {
@@ -63,23 +62,25 @@ class CreateTask extends Component {
             case 'nazwisko':
             case 'temat':
             case 'kategoria':
-                inputErrors[name] = value.length < 3 ? 'Wpisz prawidlowa wartosc' : '';
+                inputErrors[name] = value.length < 3 ? errorsText[name] : '';
             break;
 
             case 'email':
               if (value.length === 0) {
                     inputErrors.email = 'Wpisz prawidlowa wartosc';
               } else {
-                    inputErrors.email = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})/i).test(value) ? '' : 'Nieprawidlowa wartosc email';
+                    inputErrors.email = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})/i).test(value) ? '' : errorsText[name];
               }
             break;
 
             case 'priorytet':
-                inputErrors.priorytet = priorytet.indexOf(value) > -1 ? '' : 'Jedno z: ERROR, INFO, WARNING';
+                inputErrors.priorytet = priorytet.indexOf(value) > -1 ? '' : errorsText[name];
             break;
 
             case 'data':
-                inputErrors.data = value.length < 10 ? 'Podaj prawidlowa date' : '';
+            case 'opis':
+            case 'uwagi':
+                inputErrors.data = value.length < 10 ? errorsText[name] : '';
             break;
 
           default:
@@ -92,28 +93,42 @@ class CreateTask extends Component {
         const { inputErrors } = this.state;
         const errors = Object.values(inputErrors).filter(err => err.length > 0);
         const hasErrors = errors.length > 0;
-        this.setState({ formValid: !hasErrors });
+        this.setState({ isFormValid: !hasErrors });
     }
 
     renderInputs = () => {
+        const { inputErrors } = this.state;
         return Object.keys(ITASK).slice(0, -2).map(name => {
             return (
-                <Input key={name} name={name} title={name} value={this.state[name]} onBlur={this.handleTouched} onChange={this.handleChange}/>
+                <Input 
+                    key={name} 
+                    errorMsg={inputErrors[name]}
+                    name={name} 
+                    value={this.state[name]} 
+                    onBlur={this.handleTouched} 
+                    onChange={this.handleChange}
+                    type={ name === 'data' ? 'date' : 'text' }
+                />
             );
         });
     }
-
+ 
     render() {
+        const { isFormValid } = this.state;
         return (
             <div>
                 <form onSubmit={this.submitForm}>
                     {this.renderInputs()}
-                    <button type='submit'>Utworz zadanie</button>
+                    <div className='btn-wrapper'>
+                        <Button type='submit' text='Utworz zadanie' disabled={!isFormValid}/>
+                    </div>
                 </form>
-                <button onClick={this.goToHomePage}>Powrot</button>
+                <div className='btn-wrapper'>
+                    <Button onClick={this.goToHomePage} text='Powrot' />
+                </div>
             </div>
         );
     }
 }
 
-export default CreateTask;
+export default connect(null, { addNewTaskAPI })(CreateTask);

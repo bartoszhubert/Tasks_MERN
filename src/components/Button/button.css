@@ -1,0 +1,8 @@
+.btn {
+  background: white;
+  border: none;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  padding: 10px 20px;
+  text-transform: uppercase;
+}

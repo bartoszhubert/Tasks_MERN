@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchSelectedTaskAPI, fetchTasksAPI, setTaskDateAPI } from '../../action';
 
+import Button from '../Button';
 import SearchBox from '../SearchBox';
 import TasksList from '../TasksList';
 
 import './homePage.css';
 
 class HomePage extends Component {
+
+    static displayName = 'HomePage';
 
     state = {
         fetchingData: false
@@ -31,10 +34,15 @@ class HomePage extends Component {
         return (
             <div className='home-container'>
                 <SearchBox handleSearch={this.handleSearch} />
-                <Link to='/create'>
-                    <button>Create a new task</button>
+                <Link style={{ padding: '20px' }} to='/create'>
+                    <Button text='Create a new task' />
                 </Link>
-                <TasksList fetchingData={fetchingData} fetchSelectedTaskAPI={fetchSelectedTaskAPI} setTaskDateAPI={setTaskDateAPI} tasks={tasks} />
+                <TasksList 
+                    fetchingData={fetchingData} 
+                    fetchSelectedTaskAPI={fetchSelectedTaskAPI} 
+                    setTaskDateAPI={setTaskDateAPI} 
+                    tasks={tasks} 
+                />
             </div>
         )
     }

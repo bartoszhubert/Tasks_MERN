@@ -8,9 +8,11 @@ import './tasksList.css';
 
 class TasksList extends Component {
 
+    static displayName = 'TasksList';
+
     renderTaskItem = () => {
         const { fetchSelectedTaskAPI, setTaskDateAPI, tasks } = this.props;
-        const activeTasks = tasks.filter(task => task.stop.length === 0);
+        const activeTasks = tasks.filter(task => !Boolean(task.stop));
         return activeTasks.map(task => {
             return (
                 <TaskItem key={task.email} fetchSelectedTaskAPI={fetchSelectedTaskAPI} setTaskDateAPI={setTaskDateAPI} task={task} />

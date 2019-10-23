@@ -3,9 +3,14 @@ import { connect } from 'react-redux';
 import { fetchTasksAPI, updateSelectedTaskAPI } from '../../action';
 import { editTaskInputs } from '../../utility/constant';
 
+import Button from '../Button';
+import Input from '../Input';
+
 import './taskDetails.css';
 
 class TaskDetails extends Component {
+
+    static displayName = 'TaskDetails';
 
     state = {
         imie: '',
@@ -16,7 +21,8 @@ class TaskDetails extends Component {
         data: '',
         kategoria: '',
         priorytet: '',
-        uwagi: ''
+        uwagi: '',
+        isFormValid: true,
     }
 
     componentDidMount = () => {
@@ -27,7 +33,7 @@ class TaskDetails extends Component {
 
     backToHomePage = () => this.props.history.push('/');
 
-    handleChange = ({ target: { name, value } }) => this.setState({ [name]: value });
+    handleChange = ({ target: { name, value } }) => this.setState({ [name]: value, isFormValid: value.length > 10 });
 
     handleSubmit = async e => {
         e.preventDefault();
@@ -46,25 +52,24 @@ class TaskDetails extends Component {
         return editTaskInputs.map(input => {
             const isEditableInput = input === 'uwagi';
             return isEditableInput ?
-                <div key={input}>
-                    <label htmlFor={input}>{input}</label>
-                    <input id={input} type='text' name={input} value={this.state[input]} onChange={this.handleChange} />
-                </div> :
-                <div key={input}>
-                    <label htmlFor={input}>{input}</label>
+                <Input key={input} id={input} type='text' name={input} value={this.state[input]} onChange={this.handleChange} />
+                    :
+                <div className='form-group' key={input}>
+                    <label htmlFor={input} className='form-label'>{ input }</label>
                     <input id={input} type='text' readOnly name={input} defaultValue={this.state[input]}/>
                 </div>
         });
     }
 
     render() {
+        const { isFormValid } = this.state;
         return (
             <div className='details-container'>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput()}
-                    <button className='item-btn' type='submit'>Zapisz</button>
+                    <Button className='item-btn' type='submit' text='Zapisz' disabled={!isFormValid} />
                 </form>
-                <button className='item-btn' onClick={this.backToHomePage}>Powrot</button>
+                <Button className='item-btn' onClick={this.backToHomePage} text='Powrot' />
             </div>
         );
     }

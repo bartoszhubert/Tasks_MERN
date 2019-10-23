@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Button from '../Button';
+
 import './searchBox.css';
 
 class SearchBox extends Component {
+
+    static displayName = 'SearchBox';
 
     state = {
         searchedText: ''
@@ -19,9 +23,9 @@ class SearchBox extends Component {
     render() {
         const { searchedText } = this.state;
         return (
-            <form onSubmit={this.handleSubmit}>
-                <input type='text' name='searchedText' onChange={this.handleChange} value={searchedText} />
-                <button type='submit'>Search</button>
+            <form style={{ padding: '20px' }} onSubmit={this.handleSubmit}>
+                <input className='search' type='text' name='searchedText' onChange={this.handleChange} value={searchedText} />
+                <Button type='submit' text='Submit' />
             </form>
         );
     }

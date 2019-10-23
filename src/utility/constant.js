@@ -1,31 +1,18 @@
 import PropTypes from 'prop-types';
 
-// export const addUserInputs = [
-//     {
-//         name: 'name',
-//         title: 'Name',
-//         type: 'text'
-//     },
-//     {
-//         name: 'email',
-//         title: 'Email',
-//         type: 'text'
-//     },
-//     {
-//         name: 'username',
-//         title: 'Username',
-//         type: 'text'
-//     }
-// ];
-
-
 export const baseUrl = "http://localhost:5000";
 
-// export const errors = {
-//     email: 'Email is required',
-//     name: 'Name is required',
-//     username: 'Username is required'
-// };
+export const errorsText = {
+    imie: 'Wpisz prawidlowa wartosc',
+    nazwisko: 'Wpisz prawidlowa wartosc',
+    email: 'Nieprawidlowa wartosc email',
+    temat: 'Wpisz prawidlowa wartosc',
+    opis: 'Wpisz prawidlowa wartosc',
+    data: 'Wybierz date zdarzenia',
+    kategoria: 'Wpisz prawidlowa wartosc',
+    priorytet: 'Jedno z: ERROR, INFO, WARNING',
+    uwagi: 'Wpisz prawidlowa wartosc'
+};
 
 export const editTaskInputs = ['imie', 'nazwisko', 'email', 'temat', 'opis', 'data', 'kategoria', 'priorytet', 'uwagi'];
 

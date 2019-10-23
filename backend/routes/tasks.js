@@ -8,7 +8,7 @@ const getActualFormattedDate = () => {
   return `${day}.${formMonth}.${year}`;
 }
 
-router.route('/').get((req, res) => {
+router.route('/').get((_, res) => {
   Task.find()
     .then(tasks => res.json(tasks))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -69,7 +69,7 @@ router.route('/:id/:action').put((req, res) => {
 
 // router.route('/:id').delete((req, res) => {
 //   Exercise.findByIdAndDelete(req.params.id)
-//     .then(() => res.json('Exercise deleted.'))
+//     .then(() => res.json('Task deleted.'))
 //     .catch(err => res.status(400).json('Error: ' + err));
 // });
 

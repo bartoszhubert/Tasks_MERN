@@ -12,6 +12,8 @@ const END = 'ZAKONCZ';
 
 class TaskItem extends Component {
 
+    static displayName = 'TaskItem';
+
     getDetailsPage = async () => {
         const { fetchSelectedTaskAPI, history, task: { _id } } = this.props;
         await fetchSelectedTaskAPI(_id);
@@ -28,8 +30,8 @@ class TaskItem extends Component {
 
     render() {
         const { data, kategoria, opis, priorytet, start, stop, temat } = this.props.task;
-        const isStartDisabled = start.length > 0;
-        const isStopDisabled = stop.length > 0;
+        const isStartDisabled = start && start.length > 0;
+        const isStopDisabled = stop && stop.length > 0;
         return (
             <div className='item-container'>
                 <div onClick={this.getDetailsPage} className='item-infoWrap clickable'>

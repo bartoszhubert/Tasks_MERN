@@ -29,5 +29,12 @@
   align-items: center;
   display: flex;
   justify-content: center;
+  text-transform: capitalize;
   width: 35%;
+}
+
+.infoData {
+  color: gray;
+  font-size: 12px;
+  padding: 4px 0 0 10px;
 }

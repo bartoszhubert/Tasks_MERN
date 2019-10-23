@@ -3,6 +3,20 @@
   flex-direction: column;
   padding: 20px;
 }
+.form-group {
+  display: flex;
+  margin: 40px auto;
+  min-width: 300px;
+  position: relative;
+  width: 80%;
+}
+.form-label {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-transform: capitalize;
+  width: 35%;
+}
 .item-btn {
   background: white;
   border: none;

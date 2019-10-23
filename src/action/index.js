@@ -12,8 +12,8 @@ const fetchTasks = data => {
     };
 };
 export const fetchTasksAPI = searchedText => dispatch => {
-    const uriEndpoint = searchedText ? `/tasks?temat=${searchedText}` : '/tasks';
-    return axios.get(baseUrl + uriEndpoint)
+    const uriEndpoint = searchedText ? `?temat=${searchedText}` : '';
+    return axios.get(`${baseUrl}/tasks${uriEndpoint}`)
             .then(({ data, status, statusText }) => {
                 if (status === 200 && statusText === 'OK') {
                     const filteredTasks = data.filter(task => task.temat.match(searchedText));
@@ -99,11 +99,13 @@ const addNewTask = newTask => {
     };
 };
 export const addNewTaskAPI = newTask => dispatch => {
-    return axios.post(`${baseUrl}/tasks`, newTask)
-            .then(({ status, statusText }) => {
-                if (status === 200 && statusText === 'OK') {
-                    dispatch(addNewTask(newTask));
-                }  
-            })
-            .catch(err => console.warn(err));
+    return axios.post(`${baseUrl}/tasks`, JSON.stringify(newTask), {
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(({ status, statusText }) => {
+        if (status === 200 && statusText === 'OK') {
+            dispatch(addNewTask(newTask));
+        }  
+    })
+    .catch(err => console.warn(err));
 };

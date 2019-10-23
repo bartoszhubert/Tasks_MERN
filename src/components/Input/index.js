@@ -3,20 +3,23 @@ import PropTypes from 'prop-types';
 
 import './input.css';
 
-const Input = ({ name, onBlur, onChange, title, type, value }) => {
+const  DATA_FORMAT = '(DD.MM.RRRR)';
+
+const Input = ({ errorMsg, name, onBlur, onChange, title, type, value, ...rest }) => {
     return (  
         <div className="form-group">
-            <label htmlFor={ name } className="form-label">{ title }</label>
+            <label htmlFor={ name } className="form-label">{ name }{ name === 'data' && <span className='infoData'>{DATA_FORMAT}</span> }</label>
             <input
-                // className={ "form-input " + (!!formErrors[name] ? 'form-input-error' : '') }
+                style={{ minWidth: '170px' }}
                 id={ name }
                 name={ name }
                 type={ type }
                 value={ value }
                 onBlur={ onBlur }
                 onChange={ onChange }
+                { ... rest }
             />
-            {/* { !!formErrors[name] && <span className='form-error'>{ formErrors[name] }</span> } */}
+            { !!errorMsg && <span className='form-error'>{ errorMsg }</span> }
         </div>
     );
 }
@@ -24,22 +27,19 @@ const Input = ({ name, onBlur, onChange, title, type, value }) => {
 Input.displayName = 'Input';
 
 Input.defaultProps = {
-    type: 'text',
+    errorMsg: '',
+    onBlur: () => {},
+    onChange: () => {},
+    type: 'text'
   }
 
 Input.propTypes = {
-    // formErrors: PropTypes.shape({
-    //     email: PropTypes.string,
-    //     name: PropTypes.string,
-    //     username: PropTypes.string
-    // }).isRequired,
-    // PropTypes.shape(ITASK).isRequired
+    errorMsg: PropTypes.string,
     name: PropTypes.string.isRequired,
-    onBlur: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func,
     type: PropTypes.string,
-    value: PropTypes.string.isRequired
+    value: PropTypes.string
 };
 
 export default Input;
